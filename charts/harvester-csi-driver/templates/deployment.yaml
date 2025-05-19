@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - args:
-            - --v=5
+            - --v={{ .Values.logVerbosity | default 2 }}
             - --csi-address=$(ADDRESS)
             - --timeout=1m50s
             - --leader-election
@@ -35,11 +35,13 @@ spec:
           image: {{ template "system_default_registry" . }}{{ .Values.image.csi.resizer.repository }}:{{ .Values.image.csi.resizer.tag }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           name: csi-resizer
+          securityContext:
+            privileged: true
           volumeMounts:
             - mountPath: /csi/
               name: socket-dir
         - args:
-            - --v=5
+            - --v={{ .Values.logVerbosity | default 2 }}
             - --csi-address=$(ADDRESS)
             - --timeout=1m50s
             - --leader-election
@@ -56,11 +58,13 @@ spec:
           image: {{ template "system_default_registry" . }}{{ .Values.image.csi.provisioner.repository }}:{{ .Values.image.csi.provisioner.tag }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           name: csi-provisioner
+          securityContext:
+            privileged: true
           volumeMounts:
             - mountPath: /csi/
               name: socket-dir
         - args:
-            - --v=5
+            - --v={{ .Values.logVerbosity | default 2 }}
             - --csi-address=$(ADDRESS)
             - --timeout=1m50s
             - --leader-election
@@ -76,6 +80,8 @@ spec:
           image: {{ template "system_default_registry" . }}{{ .Values.image.csi.attacher.repository }}:{{ .Values.image.csi.attacher.tag }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           name: csi-attacher
+          securityContext:
+            privileged: true
           volumeMounts:
             - mountPath: /csi/
               name: socket-dir

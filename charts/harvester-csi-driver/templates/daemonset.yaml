@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - args:
-            - --v=5
+            - --v={{ .Values.logVerbosity | default 2 }}
             - --csi-address=$(ADDRESS)
             - --kubelet-registration-path={{ .Values.kubeletRootDir }}/harvester-plugins/driver.harvesterhci.io/csi.sock
           env:

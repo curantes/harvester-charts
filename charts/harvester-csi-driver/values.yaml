@@ -32,6 +32,10 @@ cloudConfig:
   secretName: ""
   hostPath: "/var/lib/rancher/rke2/etc/config-files/"
 
+# Log verbosity level for CSI sidecar containers (csi-resizer, csi-provisioner, csi-attacher)
+# Level 2 is generally recommended to reduce noise from leader election.
+logVerbosity: 2
+
 nodeSelector:
   kubernetes.io/os: linux
 
